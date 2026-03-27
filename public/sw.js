@@ -1,5 +1,5 @@
 // Version synced with version.json and constants.ts
-const VERSION = '2';
+const VERSION = '3';
 const CACHE_NAME = `garden-manager-v${VERSION}`;
 const STATIC_CACHE = `garden-manager-static-v${VERSION}`;
 const DYNAMIC_CACHE = `garden-manager-dynamic-v${VERSION}`;

@@ -22,7 +22,9 @@ import {
   Search,
   Settings,
   Monitor,
-  ExternalLink
+  ExternalLink,
+  Download,
+  RefreshCw
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -136,7 +138,7 @@ interface MoonDay {
 
 export default function GardenManager() {
   // PWA functionality
-  const { canInstall, isStandalone, isInstalled, install, needsUpdate, applyUpdate } = usePWA();
+  const { canInstall, isStandalone, isInstalled, install, needsUpdate, applyUpdate, checkForUpdates } = usePWA();
   
   // Состояние навигации
   const [section, setSection] = useState<Section>('home');
@@ -1205,32 +1207,84 @@ export default function GardenManager() {
         </CardContent>
       </Card>
 
-      {/* Возможности */}
+      {/* Установка и обновление */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Возможности</CardTitle>
+          <CardTitle className="text-lg">Приложение</CardTitle>
         </CardHeader>
-        <CardContent>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li className="flex items-center gap-2">
-              <span className="text-primary">✓</span> Лунный посевной календарь
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">✓</span> Каталог культур с описанием
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">✓</span> Обучающие статьи
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">✓</span> Справочник болезней
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">✓</span> Справочник вредителей
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">✓</span> Работает офлайн
-            </li>
-          </ul>
+        <CardContent className="space-y-3">
+          {/* Статус установки */}
+          {isInstalled ? (
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <span className="text-lg">✓</span>
+              </div>
+              <div>
+                <p className="font-medium text-sm">Приложение установлено</p>
+                <p className="text-xs text-muted-foreground">Версия {APP_VERSION}</p>
+              </div>
+            </div>
+          ) : isStandalone ? (
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <span className="text-lg">📱</span>
+              </div>
+              <div>
+                <p className="font-medium text-sm">Запущено как приложение</p>
+                <p className="text-xs text-muted-foreground">Версия {APP_VERSION}</p>
+              </div>
+            </div>
+          ) : null}
+
+          {/* Кнопка установки */}
+          {canInstall && !isInstalled && (
+            <Button
+              onClick={install}
+              className="w-full gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Установить приложение
+            </Button>
+          )}
+
+          {/* Кнопка обновления */}
+          {needsUpdate && (
+            <Button
+              onClick={applyUpdate}
+              variant="default"
+              className="w-full gap-2"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Обновить приложение
+            </Button>
+          )}
+
+          {/* Информация для iOS */}
+          {!canInstall && !isInstalled && !isStandalone && (
+            <div className="text-sm text-muted-foreground p-3 rounded-lg bg-muted/50">
+              <p className="mb-2 font-medium">Для установки на iOS:</p>
+              <ol className="space-y-1 text-xs">
+                <li>1. Нажмите кнопку "Поделиться" внизу экрана</li>
+                <li>2. Выберите "На экран Домой"</li>
+                <li>3. Нажмите "Добавить"</li>
+              </ol>
+            </div>
+          )}
+
+          {/* Проверка обновлений */}
+          <Button
+            variant="outline"
+            className="w-full gap-2"
+            onClick={async () => {
+              const hasUpdate = await checkForUpdates();
+              if (!hasUpdate && !needsUpdate) {
+                alert('У вас установлена последняя версия');
+              }
+            }}
+          >
+            <RefreshCw className="h-4 w-4" />
+            Проверить обновления
+          </Button>
         </CardContent>
       </Card>
     </div>
