@@ -19,6 +19,8 @@ export interface Culture {
   description: string | null;
   history: string | null;
   plantingTime: string | null;
+  plantingDepth: string | null;
+  spacing: string | null;
   careTips: string | null;
   watering: string | null;
   fertilizing: string | null;
@@ -95,4 +97,4 @@ export interface TableOfContentsItem {
 }
 
 // Навигационные разделы
-export type Section = 'home' | 'calendar' | 'catalog' | 'articles' | 'diseases' | 'pests' | 'culture' | 'article' | 'settings';
+export type Section = 'home' | 'calendar' | 'catalog' | 'articles' | 'settings';

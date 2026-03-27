@@ -1,2 +1,2 @@
 // Shared constants
-export const APP_VERSION = '3';
+export const APP_VERSION = '5';

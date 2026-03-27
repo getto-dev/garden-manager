@@ -6,8 +6,6 @@ import {
   Home, 
   Calendar, 
   BookOpen, 
-  Bug, 
-  ShieldAlert, 
   Leaf,
   Menu,
   X,
@@ -38,15 +36,11 @@ import {
   categories,
   cultures,
   articles,
-  diseases,
-  pests,
   MONTHS,
   MOON_PHASES,
   generateCalendarMonth,
   getCultureBySlug,
-  getArticleBySlug,
-  getDiseaseBySlug,
-  getPestBySlug
+  getArticleBySlug
 } from '@/lib/data';
 import { APP_VERSION } from '@/lib/constants';
 import { usePWA } from '@/hooks/use-pwa';
@@ -91,29 +85,6 @@ interface Article {
   tags: string | null;
 }
 
-interface Disease {
-  id: string;
-  name: string;
-  slug: string;
-  type: string;
-  description: string | null;
-  symptoms: string | null;
-  causes: string | null;
-  treatment: string | null;
-  prevention: string | null;
-}
-
-interface Pest {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  damage: string | null;
-  signs: string | null;
-  control: string | null;
-  prevention: string | null;
-}
-
 interface MoonDay {
   date: string;
   year: number;
@@ -144,8 +115,6 @@ export default function GardenManager() {
   const [section, setSection] = useState<Section>('home');
   const [selectedCulture, setSelectedCulture] = useState<Culture | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-  const [selectedDisease, setSelectedDisease] = useState<Disease | null>(null);
-  const [selectedPest, setSelectedPest] = useState<Pest | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   
   // UI состояние
@@ -235,18 +204,14 @@ export default function GardenManager() {
     setSection(newSection);
     setSelectedCulture(null);
     setSelectedArticle(null);
-    setSelectedDisease(null);
-    setSelectedPest(null);
     setSelectedCategory(null);
     setMenuOpen(false);
   };
 
   const goBack = () => {
-    if (selectedCulture || selectedArticle || selectedDisease || selectedPest) {
+    if (selectedCulture || selectedArticle) {
       setSelectedCulture(null);
       setSelectedArticle(null);
-      setSelectedDisease(null);
-      setSelectedPest(null);
     } else if (selectedCategory) {
       setSelectedCategory(null);
     } else {
@@ -294,22 +259,6 @@ export default function GardenManager() {
         Статьи
       </Button>
       <Button
-        variant={section === 'diseases' ? 'default' : 'ghost'}
-        className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
-        onClick={() => navigate('diseases')}
-      >
-        <ShieldAlert className="h-5 w-5" />
-        Болезни
-      </Button>
-      <Button
-        variant={section === 'pests' ? 'default' : 'ghost'}
-        className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
-        onClick={() => navigate('pests')}
-      >
-        <Bug className="h-5 w-5" />
-        Вредители
-      </Button>
-      <Button
         variant={section === 'settings' ? 'default' : 'ghost'}
         className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
         onClick={() => navigate('settings')}
@@ -328,6 +277,47 @@ export default function GardenManager() {
         <h1 className="text-3xl font-bold text-primary mb-2">🌱 Садовый менеджер</h1>
         <p className="text-muted-foreground">Ваш справочник по уходу за садом и огородом</p>
       </div>
+
+      {/* Кнопки установки/обновления */}
+      {(canInstall || needsUpdate) && (
+        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+          <CardContent className="p-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              {canInstall && !isInstalled && (
+                <Button
+                  onClick={install}
+                  className="flex-1 gap-2"
+                  size="lg"
+                >
+                  <Download className="h-5 w-5" />
+                  Установить приложение
+                </Button>
+              )}
+              {needsUpdate && (
+                <Button
+                  onClick={applyUpdate}
+                  variant="default"
+                  className="flex-1 gap-2"
+                  size="lg"
+                >
+                  <RefreshCw className="h-5 w-5" />
+                  Обновить приложение
+                </Button>
+              )}
+            </div>
+            {!canInstall && !isInstalled && !isStandalone && (
+              <div className="text-sm text-muted-foreground mt-3">
+                <p className="font-medium mb-1">Для установки на iOS:</p>
+                <ol className="space-y-1 text-xs">
+                  <li>1. Нажмите кнопку "Поделиться" внизу экрана</li>
+                  <li>2. Выберите "На экран Домой"</li>
+                  <li>3. Нажмите "Добавить"</li>
+                </ol>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Сегодня в календаре */}
       {todayData && (
@@ -389,22 +379,6 @@ export default function GardenManager() {
             <BookOpen className="h-10 w-10 mx-auto mb-2 text-primary" />
             <h3 className="font-semibold">Статьи</h3>
             <p className="text-sm text-muted-foreground">Обучающие материалы</p>
-          </CardContent>
-        </Card>
-
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('diseases')}>
-          <CardContent className="p-6 text-center">
-            <ShieldAlert className="h-10 w-10 mx-auto mb-2 text-destructive" />
-            <h3 className="font-semibold">Болезни</h3>
-            <p className="text-sm text-muted-foreground">Описание и лечение</p>
-          </CardContent>
-        </Card>
-
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('pests')}>
-          <CardContent className="p-6 text-center">
-            <Bug className="h-10 w-10 mx-auto mb-2 text-destructive" />
-            <h3 className="font-semibold">Вредители</h3>
-            <p className="text-sm text-muted-foreground">Методы борьбы</p>
           </CardContent>
         </Card>
       </div>
@@ -944,174 +918,6 @@ export default function GardenManager() {
     );
   };
 
-  // Болезни
-  const DiseasesPage = () => (
-    <div className="space-y-4">
-      {!selectedDisease ? (
-        <>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <ShieldAlert className="h-6 w-6" />
-            Болезни растений
-          </h1>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {diseases.map(disease => (
-              <Card
-                key={disease.id}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setSelectedDisease(disease)}
-              >
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">{disease.name}</CardTitle>
-                  <Badge variant="outline">{disease.type}</Badge>
-                </CardHeader>
-                <CardContent>
-                  {disease.description && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">{disease.description}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </>
-      ) : (
-        <DiseaseDetail disease={selectedDisease} onBack={goBack} />
-      )}
-    </div>
-  );
-
-  // Детальная страница болезни
-  const DiseaseDetail = ({ disease, onBack }: { disease: Disease; onBack: () => void }) => (
-    <div className="space-y-4">
-      <Button variant="ghost" onClick={onBack} className="mb-2">
-        <ChevronLeft className="h-4 w-4 mr-1" />
-        Назад
-      </Button>
-
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl">{disease.name}</CardTitle>
-            <Badge>{disease.type}</Badge>
-          </div>
-          {disease.description && <CardDescription>{disease.description}</CardDescription>}
-        </CardHeader>
-      </Card>
-
-      <Accordion type="multiple" className="w-full">
-        {disease.symptoms && (
-          <AccordionItem value="symptoms">
-            <AccordionTrigger>🔍 Симптомы</AccordionTrigger>
-            <AccordionContent>{disease.symptoms}</AccordionContent>
-          </AccordionItem>
-        )}
-
-        {disease.causes && (
-          <AccordionItem value="causes">
-            <AccordionTrigger>⚡ Причины</AccordionTrigger>
-            <AccordionContent>{disease.causes}</AccordionContent>
-          </AccordionItem>
-        )}
-
-        {disease.treatment && (
-          <AccordionItem value="treatment">
-            <AccordionTrigger>💊 Лечение</AccordionTrigger>
-            <AccordionContent>{disease.treatment}</AccordionContent>
-          </AccordionItem>
-        )}
-
-        {disease.prevention && (
-          <AccordionItem value="prevention">
-            <AccordionTrigger>🛡️ Профилактика</AccordionTrigger>
-            <AccordionContent>{disease.prevention}</AccordionContent>
-          </AccordionItem>
-        )}
-      </Accordion>
-    </div>
-  );
-
-  // Вредители
-  const PestsPage = () => (
-    <div className="space-y-4">
-      {!selectedPest ? (
-        <>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Bug className="h-6 w-6" />
-            Вредители
-          </h1>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {pests.map(pest => (
-              <Card
-                key={pest.id}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setSelectedPest(pest)}
-              >
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">{pest.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {pest.description && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">{pest.description}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </>
-      ) : (
-        <PestDetail pest={selectedPest} onBack={goBack} />
-      )}
-    </div>
-  );
-
-  // Детальная страница вредителя
-  const PestDetail = ({ pest, onBack }: { pest: Pest; onBack: () => void }) => (
-    <div className="space-y-4">
-      <Button variant="ghost" onClick={onBack} className="mb-2">
-        <ChevronLeft className="h-4 w-4 mr-1" />
-        Назад
-      </Button>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">{pest.name}</CardTitle>
-          {pest.description && <CardDescription>{pest.description}</CardDescription>}
-        </CardHeader>
-      </Card>
-
-      <Accordion type="multiple" className="w-full">
-        {pest.damage && (
-          <AccordionItem value="damage">
-            <AccordionTrigger>⚠️ Наносимый вред</AccordionTrigger>
-            <AccordionContent>{pest.damage}</AccordionContent>
-          </AccordionItem>
-        )}
-
-        {pest.signs && (
-          <AccordionItem value="signs">
-            <AccordionTrigger>🔍 Признаки</AccordionTrigger>
-            <AccordionContent>{pest.signs}</AccordionContent>
-          </AccordionItem>
-        )}
-
-        {pest.control && (
-          <AccordionItem value="control">
-            <AccordionTrigger>🎯 Методы борьбы</AccordionTrigger>
-            <AccordionContent>{pest.control}</AccordionContent>
-          </AccordionItem>
-        )}
-
-        {pest.prevention && (
-          <AccordionItem value="prevention">
-            <AccordionTrigger>🛡️ Профилактика</AccordionTrigger>
-            <AccordionContent>{pest.prevention}</AccordionContent>
-          </AccordionItem>
-        )}
-      </Accordion>
-    </div>
-  );
-
   // Страница настроек
   const SettingsPage = () => (
     <div className="space-y-4">
@@ -1301,10 +1107,6 @@ export default function GardenManager() {
         return <CatalogPage />;
       case 'articles':
         return <ArticlesPage />;
-      case 'diseases':
-        return <DiseasesPage />;
-      case 'pests':
-        return <PestsPage />;
       case 'settings':
         return <SettingsPage />;
       default:
