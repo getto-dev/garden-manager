@@ -1,88 +1,127 @@
-/// <reference lib="webworker" />
+// Version synced with version.json and constants.ts
+const VERSION = '2';
+const CACHE_NAME = `garden-manager-v${VERSION}`;
+const STATIC_CACHE = `garden-manager-static-v${VERSION}`;
+const DYNAMIC_CACHE = `garden-manager-dynamic-v${VERSION}`;
 
-const CACHE_NAME = 'garden-manager-v1';
-const OFFLINE_URL = '/offline.html';
-
-const urlsToCache = [
-  '/',
-  '/manifest.json',
-  '/offline.html'
+const STATIC_FILES = [
+  './',
+  './manifest.json',
+  './version.json',
 ];
 
-// Install event
+// Send version message to clients
+function notifyClients(message) {
+  self.clients.matchAll().then((clients) => {
+    clients.forEach((client) => {
+      client.postMessage(message);
+    });
+  });
+}
+
 self.addEventListener('install', (event) => {
+  console.log('SW: Installing version', VERSION);
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
+    caches.open(STATIC_CACHE).then((cache) => {
+      return cache.addAll(STATIC_FILES);
+    })
   );
+  // Notify clients about new version during install
+  notifyClients({ type: 'SW_INSTALLING', version: VERSION });
+  self.skipWaiting();
 });
 
-// Activate event
 self.addEventListener('activate', (event) => {
+  console.log('SW: Activating version', VERSION);
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames
-          .filter((cacheName) => cacheName !== CACHE_NAME)
-          .map((cacheName) => caches.delete(cacheName))
+        keys
+          .filter((key) => key !== STATIC_CACHE && key !== DYNAMIC_CACHE)
+          .map((key) => {
+            console.log('SW: Deleting old cache', key);
+            return caches.delete(key);
+          })
       );
-    }).then(() => self.clients.claim())
+    })
   );
+  self.clients.claim();
+
+  // Notify clients about activation
+  notifyClients({ type: 'SW_ACTIVATED', version: VERSION });
 });
 
-// Fetch event
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  if (request.method !== 'GET') return;
+
+  // Always fetch version.json from network (no cache)
+  if (url.pathname.endsWith('/version.json')) {
     event.respondWith(
-      fetch(event.request)
-        .catch(() => caches.match(OFFLINE_URL))
+      fetch(request).catch(() => caches.match(request))
     );
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
-        }
-
-        return fetch(event.request).then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          const responseToCache = response.clone();
-
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-
-          return response;
-        });
+  // Cross-origin requests: cache-first
+  if (url.origin !== location.origin) {
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        return cached || fetch(request);
       })
+    );
+    return;
+  }
+
+  // Navigation requests: network-first with cache fallback
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const cloned = response.clone();
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(request, cloned);
+          });
+          return response;
+        })
+        .catch(() => {
+          return caches.match(request).then((cached) => {
+            return cached || caches.match('./');
+          });
+        })
+    );
+    return;
+  }
+
+  // Other requests: stale-while-revalidate
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) {
+        // Return cached, update in background
+        fetch(request).then((response) => {
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(request, response);
+          });
+        }).catch(() => {});
+        return cached;
+      }
+
+      return fetch(request).then((response) => {
+        const cloned = response.clone();
+        caches.open(DYNAMIC_CACHE).then((cache) => {
+          cache.put(request, cloned);
+        });
+        return response;
+      });
+    })
   );
 });
 
-// Push notifications
-self.addEventListener('push', (event) => {
-  if (event.data) {
-    const data = event.data.json();
-    const options = {
-      body: data.body,
-      icon: '/icons/icon-192x192.png',
-      badge: '/icons/icon-72x72.png',
-      vibrate: [100, 50, 100],
-      data: {
-        dateOfArrival: Date.now(),
-        primaryKey: 1
-      }
-    };
-    
-    event.waitUntil(
-      self.registration.showNotification(data.title, options)
-    );
+self.addEventListener('message', (event) => {
+  if (event.data === 'skipWaiting') {
+    console.log('SW: skipWaiting requested');
+    self.skipWaiting();
   }
 });

@@ -46,6 +46,10 @@ import {
   getDiseaseBySlug,
   getPestBySlug
 } from '@/lib/data';
+import { APP_VERSION } from '@/lib/constants';
+import { usePWA } from '@/hooks/use-pwa';
+import { InstallBanner } from '@/components/InstallBanner';
+import { IOSInstallBanner } from '@/components/IOSInstallBanner';
 
 // Типы данных
 interface Category {
@@ -130,10 +134,10 @@ interface MoonDay {
   recommendation: string;
 }
 
-// Версия приложения
-const APP_VERSION = '1.0.0';
-
 export default function GardenManager() {
+  // PWA functionality
+  const { canInstall, isStandalone, isInstalled, install, needsUpdate, applyUpdate } = usePWA();
+  
   // Состояние навигации
   const [section, setSection] = useState<Section>('home');
   const [selectedCulture, setSelectedCulture] = useState<Culture | null>(null);
@@ -1377,6 +1381,44 @@ export default function GardenManager() {
 
       {/* Spacer for bottom nav */}
       <div className="lg:hidden h-16" />
+
+      {/* Update notification */}
+      {needsUpdate && (
+        <div className="fixed top-4 left-4 right-4 z-[60] max-w-md mx-auto">
+          <Card className="bg-primary text-white shadow-lg">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">🔄</span>
+                  <div>
+                    <p className="font-semibold text-sm">Доступно обновление</p>
+                    <p className="text-xs opacity-90">Новая версия приложения</p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={applyUpdate}
+                  className="shrink-0"
+                >
+                  Обновить
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* PWA Install Banners */}
+      <InstallBanner
+        onInstall={install}
+        canInstall={canInstall}
+        isInstalled={isInstalled}
+      />
+      <IOSInstallBanner
+        isStandalone={isStandalone}
+        isInstalled={isInstalled}
+      />
     </div>
   );
 }
