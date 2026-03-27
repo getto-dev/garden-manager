@@ -220,47 +220,47 @@ export default function GardenManager() {
   const todayData = calendarMonth.find(d => d.date === today);
 
   // Навигационное меню
-  const NavMenu = ({ mobile = false }: { mobile?: boolean }) => (
-    <nav className={`flex ${mobile ? 'flex-col gap-2' : 'gap-1'}`}>
+  const NavMenu = ({ vertical = false }: { vertical?: boolean }) => (
+    <nav className={`flex ${vertical ? 'flex-col gap-1' : 'gap-1'}`}>
       <Button
         variant={section === 'home' ? 'default' : 'ghost'}
-        className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
+        className={`justify-start gap-3 ${vertical ? 'w-full' : ''}`}
         onClick={() => navigate('home')}
       >
         <Home className="h-5 w-5" />
-        Главная
+        <span>Главная</span>
       </Button>
       <Button
         variant={section === 'calendar' ? 'default' : 'ghost'}
-        className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
+        className={`justify-start gap-3 ${vertical ? 'w-full' : ''}`}
         onClick={() => navigate('calendar')}
       >
         <Calendar className="h-5 w-5" />
-        Календарь
+        <span>Календарь</span>
       </Button>
       <Button
         variant={section === 'catalog' ? 'default' : 'ghost'}
-        className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
+        className={`justify-start gap-3 ${vertical ? 'w-full' : ''}`}
         onClick={() => navigate('catalog')}
       >
         <Leaf className="h-5 w-5" />
-        Каталог
+        <span>Каталог</span>
       </Button>
       <Button
         variant={section === 'articles' ? 'default' : 'ghost'}
-        className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
+        className={`justify-start gap-3 ${vertical ? 'w-full' : ''}`}
         onClick={() => navigate('articles')}
       >
         <BookOpen className="h-5 w-5" />
-        Статьи
+        <span>Статьи</span>
       </Button>
       <Button
         variant={section === 'settings' ? 'default' : 'ghost'}
-        className={`justify-start gap-3 ${mobile ? 'w-full' : ''}`}
+        className={`justify-start gap-3 ${vertical ? 'w-full' : ''}`}
         onClick={() => navigate('settings')}
       >
         <Settings className="h-5 w-5" />
-        Настройки
+        <span>Настройки</span>
       </Button>
     </nav>
   );
@@ -269,9 +269,9 @@ export default function GardenManager() {
   const HomePage = () => (
     <div className="space-y-6">
       {/* Приветствие */}
-      <div className="text-center py-8">
-        <h1 className="text-3xl font-bold text-primary mb-2">🌱 Садовод</h1>
-        <p className="text-muted-foreground">Ваш справочник по уходу за садом и огородом</p>
+      <div className="text-center py-4 lg:py-8">
+        <h1 className="text-3xl lg:text-4xl font-bold text-primary mb-2">🌱 Садовод</h1>
+        <p className="text-muted-foreground text-lg">Ваш справочник по уходу за садом и огородом</p>
       </div>
 
       {/* Уведомление об обновлении */}
@@ -281,7 +281,7 @@ export default function GardenManager() {
             <Button
               onClick={applyUpdate}
               variant="default"
-              className="w-full gap-2"
+              className="w-full sm:w-auto gap-2"
               size="lg"
             >
               <RefreshCw className="h-5 w-5" />
@@ -301,10 +301,10 @@ export default function GardenManager() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-4 mb-4">
-              <span className="text-4xl">{MOON_PHASES[todayData.moonPhase]}</span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
+              <span className="text-5xl">{MOON_PHASES[todayData.moonPhase]}</span>
               <div>
-                <p className="font-semibold">{todayData.moonPhaseName}</p>
+                <p className="font-semibold text-lg">{todayData.moonPhaseName}</p>
                 <p className="text-sm text-muted-foreground">
                   {todayData.zodiacSign} • {todayData.zodiacElement}
                 </p>
@@ -329,27 +329,27 @@ export default function GardenManager() {
       )}
 
       {/* Быстрые разделы */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('calendar')}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]" onClick={() => navigate('calendar')}>
           <CardContent className="p-6 text-center">
-            <Calendar className="h-10 w-10 mx-auto mb-2 text-primary" />
-            <h3 className="font-semibold">Лунный календарь</h3>
+            <Calendar className="h-12 w-12 mx-auto mb-3 text-primary" />
+            <h3 className="font-semibold text-lg">Лунный календарь</h3>
             <p className="text-sm text-muted-foreground">Фазы луны и рекомендации</p>
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('catalog')}>
+        <Card className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]" onClick={() => navigate('catalog')}>
           <CardContent className="p-6 text-center">
-            <Leaf className="h-10 w-10 mx-auto mb-2 text-primary" />
-            <h3 className="font-semibold">Каталог культур</h3>
+            <Leaf className="h-12 w-12 mx-auto mb-3 text-primary" />
+            <h3 className="font-semibold text-lg">Каталог культур</h3>
             <p className="text-sm text-muted-foreground">Овощи, цветы, ягоды</p>
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('articles')}>
+        <Card className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]" onClick={() => navigate('articles')}>
           <CardContent className="p-6 text-center">
-            <BookOpen className="h-10 w-10 mx-auto mb-2 text-primary" />
-            <h3 className="font-semibold">Статьи</h3>
+            <BookOpen className="h-12 w-12 mx-auto mb-3 text-primary" />
+            <h3 className="font-semibold text-lg">Статьи</h3>
             <p className="text-sm text-muted-foreground">Обучающие материалы</p>
           </CardContent>
         </Card>
@@ -358,18 +358,18 @@ export default function GardenManager() {
       {/* Категории культур */}
       <div>
         <h2 className="text-xl font-bold mb-4">Категории культур</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map(cat => {
             const count = cultures.filter(c => c.categoryId === cat.id).length;
             return (
               <Card 
                 key={cat.id}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
+                className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]"
                 onClick={() => { setSelectedCategory(cat.slug); setSection('catalog'); }}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">{cat.icon}</span>
+                <CardContent className="p-4 lg:p-6">
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <span className="text-4xl">{cat.icon}</span>
                     <div>
                       <h3 className="font-semibold">{cat.name}</h3>
                       <p className="text-sm text-muted-foreground">{count} культур</p>
@@ -385,15 +385,15 @@ export default function GardenManager() {
       {/* Последние статьи */}
       <div>
         <h2 className="text-xl font-bold mb-4">Последние статьи</h2>
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {articles.slice(0, 3).map(article => (
             <Card 
               key={article.id}
-              className="cursor-pointer hover:shadow-lg transition-shadow"
+              className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.01]"
               onClick={() => setSelectedArticle(article)}
             >
               <CardContent className="p-4">
-                <h3 className="font-semibold">{article.title}</h3>
+                <h3 className="font-semibold mb-2">{article.title}</h3>
                 <p className="text-sm text-muted-foreground line-clamp-2">{article.excerpt}</p>
               </CardContent>
             </Card>
@@ -447,7 +447,7 @@ export default function GardenManager() {
             key={i}
             variant={currentMonth === i + 1 ? 'default' : 'outline'}
             size="sm"
-            className="text-xs px-2"
+            className="text-xs px-3"
             onClick={() => setCurrentMonth(i + 1)}
           >
             {m.slice(0, 3)}
@@ -457,18 +457,18 @@ export default function GardenManager() {
 
       {/* Календарь */}
       <Card>
-        <CardContent className="p-2 sm:p-4">
+        <CardContent className="p-3 lg:p-6">
           {/* Дни недели */}
           <div className="grid grid-cols-7 gap-1 mb-2">
             {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(d => (
-              <div key={d} className="text-center text-xs font-semibold text-muted-foreground p-1">
+              <div key={d} className="text-center text-xs lg:text-sm font-semibold text-muted-foreground p-2">
                 {d}
               </div>
             ))}
           </div>
           
           {/* Дни */}
-          <div className="grid grid-cols-7 gap-1">
+          <div className="grid grid-cols-7 gap-1 lg:gap-2">
             {/* Пустые ячейки для выравнивания */}
             {Array.from({ length: new Date(currentYear, currentMonth - 1, 1).getDay() || 7 }).map((_, i) => (
               <div key={`empty-${i}`} className="aspect-square" />
@@ -479,16 +479,16 @@ export default function GardenManager() {
               return (
                 <div
                   key={day.date}
-                  className={`aspect-square p-1 rounded-lg text-center cursor-pointer transition-colors
+                  className={`aspect-square p-1 lg:p-2 rounded-lg text-center cursor-pointer transition-all
                     ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}
                     ${day.isForbidden ? 'bg-destructive/20' : ''}
                     ${day.isGoodForSowing || day.isGoodForPlanting ? 'bg-primary/20' : ''}
-                    hover:bg-accent
+                    hover:bg-accent hover:scale-105
                   `}
                   title={`${day.moonPhaseName}\n${day.zodiacSign}\n${day.recommendation || ''}`}
                 >
-                  <div className="text-xs sm:text-sm font-medium">{day.day}</div>
-                  <div className="text-lg sm:text-xl">{MOON_PHASES[day.moonPhase]}</div>
+                  <div className="text-xs lg:text-sm font-medium">{day.day}</div>
+                  <div className="text-lg lg:text-2xl">{MOON_PHASES[day.moonPhase]}</div>
                 </div>
               );
             })}
@@ -496,69 +496,62 @@ export default function GardenManager() {
         </CardContent>
       </Card>
 
-      {/* Легенда */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Легенда</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-primary/20" />
-              <span>Благоприятно</span>
+      {/* Легенда и рекомендации - в 2 колонки на PC */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Легенда */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Легенда</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-primary/20" />
+                <span>Благоприятно</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-destructive/20" />
+                <span>Запрещено</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded ring-2 ring-primary" />
+                <span>Сегодня</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🌑🌒🌓🌔🌕🌖🌗🌘</span>
+                <span>Фазы</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-destructive/20" />
-              <span>Запрещено</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded ring-2 ring-primary" />
-              <span>Сегодня</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-lg">🌑🌒🌓🌔🌕🌖🌗🌘</span>
-              <span>Фазы</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Рекомендации по фазам */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Рекомендации по фазам</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex gap-3">
-            <span className="text-2xl">🌑</span>
-            <div>
-              <p className="font-semibold">Новолуние</p>
-              <p className="text-sm text-muted-foreground">Отдых. Не сажать и не пересаживать.</p>
+        {/* Рекомендации по фазам */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Рекомендации по фазам</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🌑</span>
+                <span>Новолуние — отдых</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🌒🌓🌔</span>
+                <span>Растущая — посев</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🌕</span>
+                <span>Полнолуние — сбор</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🌖🌗🌘</span>
+                <span>Убывающая — корнеплоды</span>
+              </div>
             </div>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-2xl">🌒🌓🌔</span>
-            <div>
-              <p className="font-semibold">Растущая луна</p>
-              <p className="text-sm text-muted-foreground">Посев и посадка растений надземной части.</p>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-2xl">🌕</span>
-            <div>
-              <p className="font-semibold">Полнолуние</p>
-              <p className="text-sm text-muted-foreground">Сбор урожая, заготовки.</p>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-2xl">🌖🌗🌘</span>
-            <div>
-              <p className="font-semibold">Убывающая луна</p>
-              <p className="text-sm text-muted-foreground">Корнеплоды, луковичные, обрезка, пересадка.</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 
@@ -572,60 +565,60 @@ export default function GardenManager() {
             Каталог культур
           </h1>
 
-          {/* Поиск */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Поиск культур..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-
-          {/* Категории */}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={!selectedCategory ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setSelectedCategory(null)}
-            >
-              Все
-            </Button>
-            {categories.map(cat => (
+          {/* Поиск и категории в ряд на PC */}
+          <div className="flex flex-col lg:flex-row gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Поиск культур..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <div className="flex flex-wrap gap-2">
               <Button
-                key={cat.id}
-                variant={selectedCategory === cat.slug ? 'default' : 'outline'}
+                variant={!selectedCategory ? 'default' : 'outline'}
                 size="sm"
-                onClick={() => setSelectedCategory(cat.slug)}
+                onClick={() => setSelectedCategory(null)}
               >
-                {cat.icon} {cat.name}
+                Все
               </Button>
-            ))}
+              {categories.map(cat => (
+                <Button
+                  key={cat.id}
+                  variant={selectedCategory === cat.slug ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedCategory(cat.slug)}
+                >
+                  {cat.icon} {cat.name}
+                </Button>
+              ))}
+            </div>
           </div>
 
           {/* Список культур */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {culturesByCategory.map(culture => {
               const cat = categories.find(c => c.id === culture.categoryId);
               return (
                 <Card
                   key={culture.id}
-                  className="cursor-pointer hover:shadow-lg transition-shadow"
+                  className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.01]"
                   onClick={() => setSelectedCulture(getCultureBySlug(culture.slug) as Culture)}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-2xl">
+                  <CardContent className="p-4 lg:p-5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-3xl">
                         {cat?.icon || '🌱'}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold truncate">{culture.name}</h3>
-                        <p className="text-xs text-muted-foreground">{cat?.name}</p>
+                        <h3 className="font-semibold text-lg truncate">{culture.name}</h3>
+                        <p className="text-sm text-muted-foreground">{cat?.name}</p>
                       </div>
                     </div>
                     {culture.description && (
-                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                      <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
                         {culture.description}
                       </p>
                     )}
@@ -660,17 +653,17 @@ export default function GardenManager() {
 
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-3">
-              <span className="text-4xl">{cat?.icon || '🌱'}</span>
+            <div className="flex items-center gap-4">
+              <span className="text-5xl">{cat?.icon || '🌱'}</span>
               <div>
-                <CardTitle className="text-2xl">{culture.name}</CardTitle>
-                <CardDescription>{cat?.name}</CardDescription>
+                <CardTitle className="text-2xl lg:text-3xl">{culture.name}</CardTitle>
+                <CardDescription className="text-base">{cat?.name}</CardDescription>
               </div>
             </div>
           </CardHeader>
           {culture.description && (
             <CardContent>
-              <p className="text-muted-foreground">{culture.description}</p>
+              <p className="text-muted-foreground text-lg">{culture.description}</p>
             </CardContent>
           )}
         </Card>
@@ -678,67 +671,67 @@ export default function GardenManager() {
         <Accordion type="multiple" className="w-full">
           {culture.history && (
             <AccordionItem value="history">
-              <AccordionTrigger>📜 История</AccordionTrigger>
-              <AccordionContent>{culture.history}</AccordionContent>
+              <AccordionTrigger className="text-base">📜 История</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{culture.history}</AccordionContent>
             </AccordionItem>
           )}
 
           {culture.plantingTime && (
             <AccordionItem value="planting">
-              <AccordionTrigger>🌱 Когда сажать</AccordionTrigger>
-              <AccordionContent>{culture.plantingTime}</AccordionContent>
+              <AccordionTrigger className="text-base">🌱 Когда сажать</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{culture.plantingTime}</AccordionContent>
             </AccordionItem>
           )}
 
           {culture.careTips && (
             <AccordionItem value="care">
-              <AccordionTrigger>💚 Уход</AccordionTrigger>
-              <AccordionContent>{culture.careTips}</AccordionContent>
+              <AccordionTrigger className="text-base">💚 Уход</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{culture.careTips}</AccordionContent>
             </AccordionItem>
           )}
 
           {culture.watering && (
             <AccordionItem value="watering">
-              <AccordionTrigger>💧 Полив</AccordionTrigger>
-              <AccordionContent>{culture.watering}</AccordionContent>
+              <AccordionTrigger className="text-base">💧 Полив</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{culture.watering}</AccordionContent>
             </AccordionItem>
           )}
 
           {culture.fertilizing && (
             <AccordionItem value="fertilizing">
-              <AccordionTrigger>🧪 Удобрение</AccordionTrigger>
-              <AccordionContent>{culture.fertilizing}</AccordionContent>
+              <AccordionTrigger className="text-base">🧪 Удобрение</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{culture.fertilizing}</AccordionContent>
             </AccordionItem>
           )}
 
           {culture.harvesting && (
             <AccordionItem value="harvesting">
-              <AccordionTrigger>🧺 Сбор урожая</AccordionTrigger>
-              <AccordionContent>{culture.harvesting}</AccordionContent>
+              <AccordionTrigger className="text-base">🧺 Сбор урожая</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{culture.harvesting}</AccordionContent>
             </AccordionItem>
           )}
 
           {culture.storage && (
             <AccordionItem value="storage">
-              <AccordionTrigger>🏠 Хранение</AccordionTrigger>
-              <AccordionContent>{culture.storage}</AccordionContent>
+              <AccordionTrigger className="text-base">🏠 Хранение</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{culture.storage}</AccordionContent>
             </AccordionItem>
           )}
 
           {(culture.goodNeighbors || culture.badNeighbors) && (
             <AccordionItem value="neighbors">
-              <AccordionTrigger>🌿 Совместимость</AccordionTrigger>
+              <AccordionTrigger className="text-base">🌿 Совместимость</AccordionTrigger>
               <AccordionContent>
                 {culture.goodNeighbors && (
-                  <div className="mb-2">
-                    <p className="font-semibold text-primary">✅ Хорошие соседи:</p>
-                    <p>{culture.goodNeighbors}</p>
+                  <div className="mb-3">
+                    <p className="font-semibold text-primary mb-1">✅ Хорошие соседи:</p>
+                    <p className="text-muted-foreground">{culture.goodNeighbors}</p>
                   </div>
                 )}
                 {culture.badNeighbors && (
                   <div>
-                    <p className="font-semibold text-destructive">❌ Плохие соседи:</p>
-                    <p>{culture.badNeighbors}</p>
+                    <p className="font-semibold text-destructive mb-1">❌ Плохие соседи:</p>
+                    <p className="text-muted-foreground">{culture.badNeighbors}</p>
                   </div>
                 )}
               </AccordionContent>
@@ -764,27 +757,27 @@ export default function GardenManager() {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <span className="text-4xl">{category.icon}</span>
+          <div className="flex items-center gap-4">
+            <span className="text-5xl">{category.icon}</span>
             <div>
-              <CardTitle className="text-2xl">{category.name}</CardTitle>
-              {category.description && <CardDescription>{category.description}</CardDescription>}
+              <CardTitle className="text-2xl lg:text-3xl">{category.name}</CardTitle>
+              {category.description && <CardDescription className="text-base">{category.description}</CardDescription>}
             </div>
           </div>
         </CardHeader>
       </Card>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {cultures.map(c => (
           <Card
             key={c.id}
-            className="cursor-pointer hover:shadow-lg transition-shadow"
+            className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.01]"
             onClick={() => onSelectCulture(c.slug)}
           >
             <CardContent className="p-4">
-              <h3 className="font-semibold">{c.name}</h3>
+              <h3 className="font-semibold text-lg">{c.name}</h3>
               {c.description && (
-                <p className="text-sm text-muted-foreground line-clamp-2">{c.description}</p>
+                <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{c.description}</p>
               )}
             </CardContent>
           </Card>
@@ -803,11 +796,11 @@ export default function GardenManager() {
             Обучающие статьи
           </h1>
 
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {articles.map(article => (
               <Card
                 key={article.id}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
+                className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.01]"
                 onClick={() => setSelectedArticle(article)}
               >
                 <CardHeader>
@@ -836,54 +829,60 @@ export default function GardenManager() {
     const toc = extractTOC(article.content);
     
     return (
-      <div className="space-y-4">
-        <Button variant="ghost" onClick={onBack} className="mb-2">
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          Назад к списку
-        </Button>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3 space-y-4">
+          <Button variant="ghost" onClick={onBack} className="mb-2">
+            <ChevronLeft className="h-4 w-4 mr-1" />
+            Назад к списку
+          </Button>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">{article.title}</CardTitle>
-            {article.excerpt && <CardDescription>{article.excerpt}</CardDescription>}
-          </CardHeader>
-        </Card>
-
-        {/* Оглавление */}
-        {toc.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Оглавление</CardTitle>
+              <CardTitle className="text-2xl lg:text-3xl">{article.title}</CardTitle>
+              {article.excerpt && <CardDescription className="text-base">{article.excerpt}</CardDescription>}
             </CardHeader>
-            <CardContent>
-              <nav className="space-y-1">
-                {toc.map(item => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    className={`block text-sm text-primary hover:underline ${item.level === 3 ? 'ml-4' : ''}`}
-                  >
-                    {item.title}
-                  </a>
-                ))}
-              </nav>
+          </Card>
+
+          {/* Содержание */}
+          <Card>
+            <CardContent className="prose prose-sm max-w-none py-6">
+              {renderMarkdown(article.content)}
             </CardContent>
           </Card>
-        )}
 
-        {/* Содержание */}
-        <Card>
-          <CardContent className="prose prose-sm max-w-none py-4">
-            {renderMarkdown(article.content)}
-          </CardContent>
-        </Card>
+          {/* Теги */}
+          {article.tags && (
+            <div className="flex flex-wrap gap-1">
+              {article.tags.split(',').map(tag => (
+                <Badge key={tag} variant="secondary">{tag.trim()}</Badge>
+              ))}
+            </div>
+          )}
+        </div>
 
-        {/* Теги */}
-        {article.tags && (
-          <div className="flex flex-wrap gap-1">
-            {article.tags.split(',').map(tag => (
-              <Badge key={tag} variant="secondary">{tag.trim()}</Badge>
-            ))}
+        {/* Sidebar с оглавлением - только на PC */}
+        {toc.length > 0 && (
+          <div className="hidden lg:block">
+            <div className="sticky top-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Оглавление</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <nav className="space-y-2">
+                    {toc.map(item => (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        className={`block text-sm text-primary hover:underline ${item.level === 3 ? 'ml-4' : ''}`}
+                      >
+                        {item.title}
+                      </a>
+                    ))}
+                  </nav>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         )}
       </div>
@@ -898,150 +897,152 @@ export default function GardenManager() {
         Настройки
       </h1>
 
-      {/* Тема */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            {mounted && theme === 'dark' ? <Moon className="h-5 w-5" /> : 
-             mounted && theme === 'light' ? <Sun className="h-5 w-5" /> : 
-             <Monitor className="h-5 w-5" />}
-            Тема оформления
-          </CardTitle>
-          <CardDescription>Выберите предпочитаемую тему</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-3 gap-2">
-            <Button
-              variant={theme === 'light' ? 'default' : 'outline'}
-              className="flex flex-col gap-1 h-auto py-3"
-              onClick={() => setTheme('light')}
-            >
-              <Sun className="h-5 w-5" />
-              <span className="text-xs">Светлая</span>
-            </Button>
-            <Button
-              variant={theme === 'dark' ? 'default' : 'outline'}
-              className="flex flex-col gap-1 h-auto py-3"
-              onClick={() => setTheme('dark')}
-            >
-              <Moon className="h-5 w-5" />
-              <span className="text-xs">Тёмная</span>
-            </Button>
-            <Button
-              variant={theme === 'system' ? 'default' : 'outline'}
-              className="flex flex-col gap-1 h-auto py-3"
-              onClick={() => setTheme('system')}
-            >
-              <Monitor className="h-5 w-5" />
-              <span className="text-xs">Авто</span>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Разработчик */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Разработчик</CardTitle>
-          <CardDescription>Связаться с разработчиком</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <a
-            href="https://t.me/gettocode"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between p-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">👨‍💻</span>
-              <div>
-                <p className="font-semibold">@gettocode</p>
-                <p className="text-sm text-muted-foreground">Telegram</p>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Тема */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              {mounted && theme === 'dark' ? <Moon className="h-5 w-5" /> : 
+               mounted && theme === 'light' ? <Sun className="h-5 w-5" /> : 
+               <Monitor className="h-5 w-5" />}
+              Тема оформления
+            </CardTitle>
+            <CardDescription>Выберите предпочитаемую тему</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-2">
+              <Button
+                variant={theme === 'light' ? 'default' : 'outline'}
+                className="flex flex-col gap-1 h-auto py-3"
+                onClick={() => setTheme('light')}
+              >
+                <Sun className="h-5 w-5" />
+                <span className="text-xs">Светлая</span>
+              </Button>
+              <Button
+                variant={theme === 'dark' ? 'default' : 'outline'}
+                className="flex flex-col gap-1 h-auto py-3"
+                onClick={() => setTheme('dark')}
+              >
+                <Moon className="h-5 w-5" />
+                <span className="text-xs">Тёмная</span>
+              </Button>
+              <Button
+                variant={theme === 'system' ? 'default' : 'outline'}
+                className="flex flex-col gap-1 h-auto py-3"
+                onClick={() => setTheme('system')}
+              >
+                <Monitor className="h-5 w-5" />
+                <span className="text-xs">Авто</span>
+              </Button>
             </div>
-            <ExternalLink className="h-5 w-5 text-muted-foreground" />
-          </a>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* О приложении */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">О приложении</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex justify-between items-center py-2 border-b">
-            <span className="text-muted-foreground">Версия</span>
-            <Badge variant="secondary">{APP_VERSION}</Badge>
-          </div>
-          <div className="flex justify-between items-center py-2 border-b">
-            <span className="text-muted-foreground">Платформа</span>
-            <span className="font-medium">PWA</span>
-          </div>
-          <div className="flex justify-between items-center py-2">
-            <span className="text-muted-foreground">Язык</span>
-            <span className="font-medium">Русский</span>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Приложение */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Приложение</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {/* Статус установки */}
-          {isInstalled ? (
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-lg">✓</span>
-              </div>
-              <div>
-                <p className="font-medium text-sm">Приложение установлено</p>
-                <p className="text-xs text-muted-foreground">Версия {APP_VERSION}</p>
-              </div>
+        {/* О приложении */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">О приложении</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-muted-foreground">Версия</span>
+              <Badge variant="secondary">{APP_VERSION}</Badge>
             </div>
-          ) : isStandalone ? (
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-lg">📱</span>
-              </div>
-              <div>
-                <p className="font-medium text-sm">Запущено как приложение</p>
-                <p className="text-xs text-muted-foreground">Версия {APP_VERSION}</p>
-              </div>
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-muted-foreground">Платформа</span>
+              <span className="font-medium">PWA</span>
             </div>
-          ) : null}
+            <div className="flex justify-between items-center py-2">
+              <span className="text-muted-foreground">Язык</span>
+              <span className="font-medium">Русский</span>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Кнопка обновления */}
-          {needsUpdate && (
+        {/* Разработчик */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Разработчик</CardTitle>
+            <CardDescription>Связаться с разработчиком</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <a
+              href="https://t.me/gettocode"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">👨‍💻</span>
+                <div>
+                  <p className="font-semibold">@gettocode</p>
+                  <p className="text-sm text-muted-foreground">Telegram</p>
+                </div>
+              </div>
+              <ExternalLink className="h-5 w-5 text-muted-foreground" />
+            </a>
+          </CardContent>
+        </Card>
+
+        {/* Приложение */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Приложение</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {/* Статус установки */}
+            {isInstalled ? (
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <span className="text-lg">✓</span>
+                </div>
+                <div>
+                  <p className="font-medium text-sm">Приложение установлено</p>
+                  <p className="text-xs text-muted-foreground">Версия {APP_VERSION}</p>
+                </div>
+              </div>
+            ) : isStandalone ? (
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <span className="text-lg">📱</span>
+                </div>
+                <div>
+                  <p className="font-medium text-sm">Запущено как приложение</p>
+                  <p className="text-xs text-muted-foreground">Версия {APP_VERSION}</p>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Кнопка обновления */}
+            {needsUpdate && (
+              <Button
+                onClick={applyUpdate}
+                variant="default"
+                className="w-full gap-2"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Обновить приложение
+              </Button>
+            )}
+
+            {/* Проверка обновлений */}
             <Button
-              onClick={applyUpdate}
-              variant="default"
+              variant="outline"
               className="w-full gap-2"
+              onClick={async () => {
+                const hasUpdate = await checkForUpdates();
+                if (!hasUpdate && !needsUpdate) {
+                  alert('У вас установлена последняя версия');
+                }
+              }}
             >
               <RefreshCw className="h-4 w-4" />
-              Обновить приложение
+              Проверить обновления
             </Button>
-          )}
-
-          {/* Проверка обновлений */}
-          <Button
-            variant="outline"
-            className="w-full gap-2"
-            onClick={async () => {
-              const hasUpdate = await checkForUpdates();
-              if (!hasUpdate && !needsUpdate) {
-                alert('У вас установлена последняя версия');
-              }
-            }}
-          >
-            <RefreshCw className="h-4 w-4" />
-            Проверить обновления
-          </Button>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 
@@ -1064,156 +1065,179 @@ export default function GardenManager() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            {/* Мобильное меню */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-            
+    <div className="min-h-screen flex bg-background">
+      {/* Sidebar - только на PC */}
+      <aside className="hidden lg:flex w-64 flex-col border-r bg-card">
+        <div className="sticky top-0 flex flex-col h-screen">
+          {/* Logo */}
+          <div className="p-6 border-b">
             <button 
               onClick={() => navigate('home')}
-              className="flex items-center gap-2 font-bold text-primary"
+              className="flex items-center gap-3 font-bold text-xl text-primary"
             >
-              <span className="text-xl">🌱</span>
-              <span className="hidden sm:inline">Садовод</span>
+              <span className="text-2xl">🌱</span>
+              <span>Садовод</span>
             </button>
           </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex">
-            <NavMenu />
+          
+          {/* Navigation */}
+          <nav className="flex-1 p-4">
+            <NavMenu vertical />
           </nav>
+
+          {/* Footer */}
+          <div className="p-4 border-t">
+            <p className="text-xs text-muted-foreground text-center">
+              Версия {APP_VERSION}
+            </p>
+          </div>
         </div>
+      </aside>
 
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t bg-background"
-            >
-              <div className="p-4">
-                <NavMenu mobile />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Mobile Header */}
+        <header className="lg:hidden sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex h-14 items-center justify-between px-4">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+              
+              <button 
+                onClick={() => navigate('home')}
+                className="flex items-center gap-2 font-bold text-primary"
+              >
+                <span className="text-xl">🌱</span>
+                <span>Садовод</span>
+              </button>
+            </div>
+          </div>
 
-      {/* Main Content */}
-      <main className="flex-1 container px-4 py-6 max-w-4xl">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={section + (selectedCulture?.id || '') + (selectedArticle?.id || '')}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            {renderContent()}
-          </motion.div>
-        </AnimatePresence>
-      </main>
-
-      {/* Footer */}
-      <footer className="mt-auto border-t bg-muted/30">
-        <div className="container px-4 py-4 text-center text-sm text-muted-foreground">
-          <p>🌱 Садовод — справочник садовода</p>
-        </div>
-      </footer>
-
-      {/* Bottom Navigation for Mobile */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 safe-area-bottom">
-        <div className="flex justify-around py-2">
-          <Button
-            variant={section === 'home' ? 'default' : 'ghost'}
-            size="sm"
-            className="flex-col gap-1 h-auto py-2 px-3"
-            onClick={() => navigate('home')}
-          >
-            <Home className="h-5 w-5" />
-            <span className="text-xs">Главная</span>
-          </Button>
-          <Button
-            variant={section === 'calendar' ? 'default' : 'ghost'}
-            size="sm"
-            className="flex-col gap-1 h-auto py-2 px-3"
-            onClick={() => navigate('calendar')}
-          >
-            <Calendar className="h-5 w-5" />
-            <span className="text-xs">Календарь</span>
-          </Button>
-          <Button
-            variant={section === 'catalog' ? 'default' : 'ghost'}
-            size="sm"
-            className="flex-col gap-1 h-auto py-2 px-3"
-            onClick={() => navigate('catalog')}
-          >
-            <Leaf className="h-5 w-5" />
-            <span className="text-xs">Каталог</span>
-          </Button>
-          <Button
-            variant={section === 'articles' ? 'default' : 'ghost'}
-            size="sm"
-            className="flex-col gap-1 h-auto py-2 px-3"
-            onClick={() => navigate('articles')}
-          >
-            <BookOpen className="h-5 w-5" />
-            <span className="text-xs">Статьи</span>
-          </Button>
-          <Button
-            variant={section === 'settings' ? 'default' : 'ghost'}
-            size="sm"
-            className="flex-col gap-1 h-auto py-2 px-3"
-            onClick={() => navigate('settings')}
-          >
-            <Settings className="h-5 w-5" />
-            <span className="text-xs">Ещё</span>
-          </Button>
-        </div>
-      </nav>
-
-      {/* Spacer for bottom nav */}
-      <div className="lg:hidden h-16" />
-
-      {/* Update notification */}
-      {needsUpdate && (
-        <div className="fixed top-4 left-4 right-4 z-[60] max-w-md mx-auto">
-          <Card className="bg-primary text-white shadow-lg">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">🔄</span>
-                  <div>
-                    <p className="font-semibold text-sm">Доступно обновление</p>
-                    <p className="text-xs opacity-90">Новая версия приложения</p>
-                  </div>
+          {/* Mobile Navigation */}
+          <AnimatePresence>
+            {menuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="border-t bg-background"
+              >
+                <div className="p-4">
+                  <NavMenu vertical />
                 </div>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={applyUpdate}
-                  className="shrink-0"
-                >
-                  Обновить
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </header>
 
+        {/* Main Content */}
+        <main className="flex-1 container px-4 lg:px-8 py-6 max-w-5xl">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={section + (selectedCulture?.id || '') + (selectedArticle?.id || '')}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              {renderContent()}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+
+        {/* Footer - только на PC */}
+        <footer className="hidden lg:block mt-auto border-t bg-muted/30">
+          <div className="container px-8 py-4 text-center text-sm text-muted-foreground">
+            <p>🌱 Садовод — справочник садовода</p>
+          </div>
+        </footer>
+
+        {/* Bottom Navigation for Mobile */}
+        <nav className="lg:hidden fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 safe-area-bottom z-50">
+          <div className="flex justify-around py-2">
+            <Button
+              variant={section === 'home' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-col gap-1 h-auto py-2 px-3"
+              onClick={() => navigate('home')}
+            >
+              <Home className="h-5 w-5" />
+              <span className="text-xs">Главная</span>
+            </Button>
+            <Button
+              variant={section === 'calendar' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-col gap-1 h-auto py-2 px-3"
+              onClick={() => navigate('calendar')}
+            >
+              <Calendar className="h-5 w-5" />
+              <span className="text-xs">Календарь</span>
+            </Button>
+            <Button
+              variant={section === 'catalog' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-col gap-1 h-auto py-2 px-3"
+              onClick={() => navigate('catalog')}
+            >
+              <Leaf className="h-5 w-5" />
+              <span className="text-xs">Каталог</span>
+            </Button>
+            <Button
+              variant={section === 'articles' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-col gap-1 h-auto py-2 px-3"
+              onClick={() => navigate('articles')}
+            >
+              <BookOpen className="h-5 w-5" />
+              <span className="text-xs">Статьи</span>
+            </Button>
+            <Button
+              variant={section === 'settings' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-col gap-1 h-auto py-2 px-3"
+              onClick={() => navigate('settings')}
+            >
+              <Settings className="h-5 w-5" />
+              <span className="text-xs">Ещё</span>
+            </Button>
+          </div>
+        </nav>
+
+        {/* Spacer for bottom nav on mobile */}
+        <div className="lg:hidden h-16" />
+
+        {/* Update notification */}
+        {needsUpdate && (
+          <div className="fixed top-4 left-4 right-4 z-[60] max-w-md mx-auto lg:left-auto lg:right-4 lg:mx-0">
+            <Card className="bg-primary text-white shadow-lg">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">🔄</span>
+                    <div>
+                      <p className="font-semibold text-sm">Доступно обновление</p>
+                      <p className="text-xs opacity-90">Новая версия приложения</p>
+                    </div>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={applyUpdate}
+                    className="shrink-0"
+                  >
+                    Обновить
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
