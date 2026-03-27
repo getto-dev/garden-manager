@@ -15,12 +15,9 @@ export interface Culture {
   slug: string;
   categoryId: string;
   category?: Category;
-  image: string | null;
   description: string | null;
   history: string | null;
   plantingTime: string | null;
-  plantingDepth: string | null;
-  spacing: string | null;
   careTips: string | null;
   watering: string | null;
   fertilizing: string | null;
@@ -35,40 +32,12 @@ export interface Article {
   title: string;
   slug: string;
   category: string;
-  image: string | null;
   excerpt: string | null;
   content: string;
-  tableOfContents: string | null;
   tags: string | null;
 }
 
-export interface Disease {
-  id: string;
-  name: string;
-  slug: string;
-  type: string;
-  image: string | null;
-  description: string | null;
-  symptoms: string | null;
-  causes: string | null;
-  treatment: string | null;
-  prevention: string | null;
-}
-
-export interface Pest {
-  id: string;
-  name: string;
-  slug: string;
-  image: string | null;
-  description: string | null;
-  damage: string | null;
-  signs: string | null;
-  control: string | null;
-  prevention: string | null;
-}
-
 export interface MoonDay {
-  id: string;
   date: string;
   year: number;
   month: number;
@@ -87,13 +56,7 @@ export interface MoonDay {
   isGoodForHarvesting: boolean;
   isGoodForSoilWork: boolean;
   isForbidden: boolean;
-  recommendation: string | null;
-}
-
-export interface TableOfContentsItem {
-  id: string;
-  title: string;
-  level: number;
+  recommendation: string;
 }
 
 // Навигационные разделы

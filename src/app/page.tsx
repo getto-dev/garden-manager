@@ -21,7 +21,6 @@ import {
   Settings,
   Monitor,
   ExternalLink,
-  Download,
   RefreshCw
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -39,13 +38,10 @@ import {
   MONTHS,
   MOON_PHASES,
   generateCalendarMonth,
-  getCultureBySlug,
-  getArticleBySlug
+  getCultureBySlug
 } from '@/lib/data';
 import { APP_VERSION } from '@/lib/constants';
 import { usePWA } from '@/hooks/use-pwa';
-import { InstallBanner } from '@/components/InstallBanner';
-import { IOSInstallBanner } from '@/components/IOSInstallBanner';
 
 // Типы данных
 interface Category {
@@ -109,7 +105,7 @@ interface MoonDay {
 
 export default function GardenManager() {
   // PWA functionality
-  const { canInstall, isStandalone, isInstalled, install, needsUpdate, applyUpdate, checkForUpdates } = usePWA();
+  const { isInstalled, isStandalone, needsUpdate, applyUpdate, checkForUpdates } = usePWA();
   
   // Состояние навигации
   const [section, setSection] = useState<Section>('home');
@@ -278,43 +274,19 @@ export default function GardenManager() {
         <p className="text-muted-foreground">Ваш справочник по уходу за садом и огородом</p>
       </div>
 
-      {/* Кнопки установки/обновления */}
-      {(canInstall || needsUpdate) && (
+      {/* Уведомление об обновлении */}
+      {needsUpdate && (
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="p-4">
-            <div className="flex flex-col sm:flex-row gap-3">
-              {canInstall && !isInstalled && (
-                <Button
-                  onClick={install}
-                  className="flex-1 gap-2"
-                  size="lg"
-                >
-                  <Download className="h-5 w-5" />
-                  Установить приложение
-                </Button>
-              )}
-              {needsUpdate && (
-                <Button
-                  onClick={applyUpdate}
-                  variant="default"
-                  className="flex-1 gap-2"
-                  size="lg"
-                >
-                  <RefreshCw className="h-5 w-5" />
-                  Обновить приложение
-                </Button>
-              )}
-            </div>
-            {!canInstall && !isInstalled && !isStandalone && (
-              <div className="text-sm text-muted-foreground mt-3">
-                <p className="font-medium mb-1">Для установки на iOS:</p>
-                <ol className="space-y-1 text-xs">
-                  <li>1. Нажмите кнопку "Поделиться" внизу экрана</li>
-                  <li>2. Выберите "На экран Домой"</li>
-                  <li>3. Нажмите "Добавить"</li>
-                </ol>
-              </div>
-            )}
+            <Button
+              onClick={applyUpdate}
+              variant="default"
+              className="w-full gap-2"
+              size="lg"
+            >
+              <RefreshCw className="h-5 w-5" />
+              Обновить приложение
+            </Button>
           </CardContent>
         </Card>
       )}
@@ -1013,7 +985,7 @@ export default function GardenManager() {
         </CardContent>
       </Card>
 
-      {/* Установка и обновление */}
+      {/* Приложение */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Приложение</CardTitle>
@@ -1042,17 +1014,6 @@ export default function GardenManager() {
             </div>
           ) : null}
 
-          {/* Кнопка установки */}
-          {canInstall && !isInstalled && (
-            <Button
-              onClick={install}
-              className="w-full gap-2"
-            >
-              <Download className="h-4 w-4" />
-              Установить приложение
-            </Button>
-          )}
-
           {/* Кнопка обновления */}
           {needsUpdate && (
             <Button
@@ -1063,18 +1024,6 @@ export default function GardenManager() {
               <RefreshCw className="h-4 w-4" />
               Обновить приложение
             </Button>
-          )}
-
-          {/* Информация для iOS */}
-          {!canInstall && !isInstalled && !isStandalone && (
-            <div className="text-sm text-muted-foreground p-3 rounded-lg bg-muted/50">
-              <p className="mb-2 font-medium">Для установки на iOS:</p>
-              <ol className="space-y-1 text-xs">
-                <li>1. Нажмите кнопку "Поделиться" внизу экрана</li>
-                <li>2. Выберите "На экран Домой"</li>
-                <li>3. Нажмите "Добавить"</li>
-              </ol>
-            </div>
           )}
 
           {/* Проверка обновлений */}
@@ -1265,16 +1214,6 @@ export default function GardenManager() {
         </div>
       )}
 
-      {/* PWA Install Banners */}
-      <InstallBanner
-        onInstall={install}
-        canInstall={canInstall}
-        isInstalled={isInstalled}
-      />
-      <IOSInstallBanner
-        isStandalone={isStandalone}
-        isInstalled={isInstalled}
-      />
     </div>
   );
 }

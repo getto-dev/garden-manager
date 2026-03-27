@@ -1386,8 +1386,3 @@ interface MoonDay {
 export function getCultureBySlug(slug: string) {
   return cultures.find(c => c.slug === slug);
 }
-
-// Получение статьи по slug
-export function getArticleBySlug(slug: string) {
-  return articles.find(a => a.slug === slug);
-}
