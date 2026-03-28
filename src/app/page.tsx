@@ -1136,7 +1136,7 @@ export default function GardenManager() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 container px-4 lg:px-8 py-6 max-w-5xl">
+        <main className="flex-1 container px-4 lg:px-8 py-6 max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={section + (selectedCulture?.id || '') + (selectedArticle?.id || '')}
@@ -1152,7 +1152,7 @@ export default function GardenManager() {
 
         {/* Footer - только на PC */}
         <footer className="hidden lg:block mt-auto border-t bg-muted/30">
-          <div className="container px-8 py-4 text-center text-sm text-muted-foreground">
+          <div className="container px-8 py-4 text-center text-sm text-muted-foreground max-w-5xl mx-auto">
             <p>🌱 Садовод — справочник садовода</p>
           </div>
         </footer>

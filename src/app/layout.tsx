@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
+import { PWARegister } from "@/components/pwa-register";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,6 +32,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
       { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/icons/icon-72x72.png", sizes: "72x72", type: "image/png" },
@@ -78,6 +80,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="Садовод" />
+        <meta name="application-name" content="Садовод" />
+        <meta name="msapplication-TileColor" content="#16a34a" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#16a34a" />
       </head>
       <body
         className={`${inter.variable} font-sans antialiased bg-background text-foreground`}
@@ -88,6 +95,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <PWARegister />
           {children}
           <Toaster />
         </ThemeProvider>
