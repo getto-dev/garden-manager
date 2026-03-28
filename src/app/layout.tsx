@@ -29,22 +29,22 @@ export const metadata: Metadata = {
   description: "Полный справочник садовода: лунный посевной календарь, каталог культур, уход за растениями, борьба с вредителями и болезнями",
   keywords: ["сад", "огород", "лунный календарь", "посадка", "уход", "вредители", "болезни", "растения"],
   authors: [{ name: "Садовод" }],
-  manifest: "/manifest.json",
+  manifest: "/garden/manifest.json",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "32x32" },
-      { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icons/icon-72x72.png", sizes: "72x72", type: "image/png" },
-      { url: "/icons/icon-96x96.png", sizes: "96x96", type: "image/png" },
-      { url: "/icons/icon-128x128.png", sizes: "128x128", type: "image/png" },
-      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+      { url: "/garden/favicon.ico", sizes: "32x32" },
+      { url: "/garden/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/garden/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/garden/icons/icon-72x72.png", sizes: "72x72", type: "image/png" },
+      { url: "/garden/icons/icon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/garden/icons/icon-128x128.png", sizes: "128x128", type: "image/png" },
+      { url: "/garden/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/garden/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/icons/icon-152x152.png", sizes: "152x152", type: "image/png" },
-      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/garden/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/garden/icons/icon-152x152.png", sizes: "152x152", type: "image/png" },
+      { url: "/garden/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
     ],
   },
   appleWebApp: {
@@ -76,15 +76,15 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning>
       <head>
-        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/garden/icons/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="Садовод" />
         <meta name="application-name" content="Садовод" />
         <meta name="msapplication-TileColor" content="#16a34a" />
-        <meta name="msapplication-config" content="/browserconfig.xml" />
-        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#16a34a" />
+        <meta name="msapplication-config" content="/garden/browserconfig.xml" />
+        <link rel="mask-icon" href="/garden/icons/safari-pinned-tab.svg" color="#16a34a" />
       </head>
       <body
         className={`${inter.variable} font-sans antialiased bg-background text-foreground`}

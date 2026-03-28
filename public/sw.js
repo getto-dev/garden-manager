@@ -5,9 +5,9 @@ const STATIC_CACHE = `garden-manager-static-v${VERSION}`;
 const DYNAMIC_CACHE = `garden-manager-dynamic-v${VERSION}`;
 
 const STATIC_FILES = [
-  './',
-  './manifest.json',
-  './version.json',
+  '/garden/',
+  '/garden/manifest.json',
+  '/garden/version.json',
 ];
 
 // Send version message to clients
@@ -88,7 +88,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           return caches.match(request).then((cached) => {
-            return cached || caches.match('./');
+            return cached || caches.match('/garden/');
           });
         })
     );

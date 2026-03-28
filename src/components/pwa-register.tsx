@@ -5,11 +5,12 @@ import { useEffect } from 'react';
 export function PWARegister() {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      // Use absolute path for GitHub Pages with basePath
-      const swPath = '/sw.js';
-      
+      // Use absolute path for GitHub Pages with basePath /garden
+      const swPath = '/garden/sw.js';
+      const swScope = '/garden/';
+
       navigator.serviceWorker
-        .register(swPath, { scope: '/' })
+        .register(swPath, { scope: swScope })
         .then((registration) => {
           console.log('SW registered:', registration.scope);
 
